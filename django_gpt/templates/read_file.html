@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <h1> Website Categorizer</h1>
+        <script src="{{ STATIC_URL }}js/jquery-1.10.1.min.js"></script>
+        <style>
+            .progress {
+                width:50%;
+                background:yellow;
+            }
+            .bar {
+                height:15px;
+                width:0%;
+                background:tomato;
+                text-align:right;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Welcome to the Chat-GPT based Website Categorizer. This website will take a CSV of websites and categorize them using Chat GPT according to IAB 2.2 categories.</h2>
+        <br>
+        <br>
+        <p>Please upload a CSV file. The first column should contain any websites you wish categorized, while the other columns are irrelevant. Please note that the file must be a .csv. Excel or Numbers files will not work.</p>
+        <h4>Upload CSV file</h4>
+        <form enctype='multipart/form-data' action='' method='post'>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type='submit' value='Submit'>
+        </form>
+        <p>Note that the program takes approximately 3 seconds per website to operate. Please be aware if you are uploading large datasets</p>
+
+        {% if task_id %}
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+
+                // pole state of the current task
+                var PollState = function(task_id) {
+                    jQuery.ajax({
+                        url: "poll_state",
+                        type: "POST",
+                        data: "task_id=" + task_id,
+                    }).done(function(task){
+                        console.log(task);
+                        if (task.process_percent) {
+                            jQuery('.bar').css({'width': task.process_percent + '%'});
+                            jQuery('.bar').html(task.process_percent + '%')
+                        } else {
+                            jQuery('.status').html(task);
+                        };
+
+                        // create the infinite loop of Ajax calls to check the state
+                        // of the current task
+                        PollState(task_id);
+                    });
+                }
+
+                PollState('{{ task_id }}');
+            });
+        </script>
+        {% endif %}
+        <script type="text/javascript">
+            jQuery('#do-task').click( function() {
+                jQuery.ajax({
+                    url: "do_task",
+                    data: {},
+                    success: function(){
+                        jQuery.ajax({
+                            url: "",
+                            context: document.body,
+                            success: function(s, x) {
+                                jQuery(this).html(s);
+                            }
+                        });
+                    }
+                })
+            });
+        </script>
+
+    </body>
+</html>
