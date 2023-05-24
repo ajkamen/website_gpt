@@ -95,8 +95,9 @@ def websites(filename):
                 testframe.loc[website_index,i+1]=test_list[i]
         website_index+=1
     testframe.rename(columns={0:'Website', 1:'Category 1', 2:'Category 2', 3:'Category 3', 4:'Category 4', 5:'Category 5', 6:'Category 6'},  inplace=True)
-    # print(testframe)
-    testframe.to_csv('test_output.csv')
+    output_name=filename
+    output_name+="_output.csv"
+    testframe.to_csv(output_name)
 
 
 

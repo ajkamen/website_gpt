@@ -9,7 +9,7 @@ import os, sys, pprint, traceback
 import openai
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-api_key = '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' # Yakov's API key
+api_key = 'YOUR_API_KEY_HERE' # put your api key for chat GPT here
 openai.api_key = api_key
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
